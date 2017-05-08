@@ -8,6 +8,10 @@
 /tmp
 /app/**/*.js
 /app/**/*.js.map
+/target/Prueba-1.0
+/target/classes
+/target/maven-archiver
+/target/surefire
 
 # dependencies
 /node_modules

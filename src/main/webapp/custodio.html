@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Custodio</title>
+    <link rel="stylesheet" href="components/bootstrap-3.3.7-dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="components/bootstrap-3.3.7-dist/css/bootstrap-theme.css"/>
+</head>
+<body>
+<h1>Custodio Access</h1>
+<div ng-app="pruebaApp" ng-controller="custodioCtrl">
+    <form ng ng-hide="session==='true'" ng-submit="login(usrForm,pwdForm)" class="col-md-6">
+        <div class="form-group">
+            <label for="name">User</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="User" ng-model="usrForm">
+        </div>
+        <div class="form-group">
+            <label for="name">Password</label>
+            <input type="password" ng-model="pwdForm" class="form-control" id="pass" name="pass" placeholder="Password">
+        </div>
+        <input type="submit" value="Login" class="btn btn-success"/>
+    </form>
+    <table ng-if="session==='true'" class="table">
+        <tr>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>State</th>
+            <th>Application Date</th>
+            <th>Delivery Date</th>
+            <th>Actions</th>
+        </tr>
+        <tr ng-repeat="record in records | orderBy:'application_date'"
+            ng-class="{'success': record.state ==='delivered', 'danger': record.state ==='pending'}">
+            <td>{{record.name}}</td>
+            <td>{{record.amount | currency }}</td>
+            <td>{{record.state}}</td>
+            <td>{{record.application_date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td><span ng-show="record.state ==='delivered'">{{record.delivery_date | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+            </td>
+            <td>
+                <button ng-show="record.state ==='pending'" ng-click="deliver(record.id)" type="button"
+                        class="btn btn-success">Deliver
+                </button>
+            </td>
+        </tr>
+    </table>
+    <div ng-if="session==='true'" class="panel panel-default">
+        <div class="panel-heading">Balance</div>
+        <div class="panel-body">
+            <strong>Total added (+): </strong>{{added | currency }}
+            <br>
+            <strong>Total delivered (-): </strong>{{delivered | currency }}
+            <br>
+            <strong>Total pending ( ): </strong>{{pending | currency }}
+            <hr>
+            <strong>Total: {{total | currency }}</strong>
+        </div>
+    </div>
+    <a href="index.html" class="btn btn-info">Go to Request page</a>
+    <a ng-if="session==='true'" href="#" ng-click="logout()" class="btn btn-danger">Logout</a>
+</div>
+<script src="components/jquery/jquery-3.2.1.min.js"></script>
+<script src="components/angular/angular.js"></script>
+<script src="components/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<script src="components/angular/angular-cookies.js"></script>
+
+<script src="scripts/controllers/custodio.controller.js"></script>
+</body>
+</html>
